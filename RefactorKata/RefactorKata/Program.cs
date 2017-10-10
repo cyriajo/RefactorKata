@@ -4,9 +4,9 @@ using System.Data.SqlClient;
 
 namespace RefactorKata
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //This is intentionally bad : (  Let's Refactor!
             var conn = new SqlConnection("Server=.;Database=myDataBase;User Id=myUsername;Password = myPassword;");
@@ -24,7 +24,7 @@ namespace RefactorKata
             {
                 var prod = new Product
                 {
-                    name = reader["Name"].ToString()
+                    Name = reader["Name"].ToString()
                 };
                 products.Add(prod);
             }
@@ -32,13 +32,12 @@ namespace RefactorKata
             Console.WriteLine("Products Loaded!");
             for (var i =0; i< products.Count; i++)
             {
-                Console.WriteLine(products[i].name);
+                Console.WriteLine(products[i].Name);
             }
         }
     }
     public class Product
     {
-        public string Name;
-        public string Name { get { return name; } set { name = value; } }
+        public string Name { get; set; }
     }
 }

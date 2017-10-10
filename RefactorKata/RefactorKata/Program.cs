@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace RefactorKata
 {
@@ -8,15 +9,15 @@ namespace RefactorKata
         static void Main(string[] args)
         {
             //This is intentionally bad : (  Let's Refactor!
-            System.Data.SqlClient.SqlConnection Conn = new System.Data.SqlClient.SqlConnection("Server=.;Database=myDataBase;User Id=myUsername;Password = myPassword;");
+            var conn = new SqlConnection("Server=.;Database=myDataBase;User Id=myUsername;Password = myPassword;");
 
-            System.Data.SqlClient.SqlCommand cmd = Conn.CreateCommand();
+            var cmd = conn.CreateCommand();
             cmd.CommandText = "select * from Products";
             /*
              * cmd.CommandText = "Select * from Invoices";
              */
-            System.Data.SqlClient.SqlDataReader reader = cmd.ExecuteReader();
-            List<Product> products = new List<Product>();
+            var reader = cmd.ExecuteReader();
+            var products = new List<Product>();
 
             //TODO: Replace with Dapper
             while (reader.Read())
@@ -25,9 +26,9 @@ namespace RefactorKata
                 prod.name = reader["Name"].ToString();
                 products.Add(prod);
             }
-            Conn.Dispose();
+            conn.Dispose();
             Console.WriteLine("Products Loaded!");
-            for (int i =0; i< products.Count; i++)
+            for (var i =0; i< products.Count; i++)
             {
                 Console.WriteLine(products[i].name);
             }
@@ -35,7 +36,7 @@ namespace RefactorKata
     }
     public class Product
     {
-        public string name;
+        public string Name;
         public string Name { get { return name; } set { name = value; } }
     }
 }
